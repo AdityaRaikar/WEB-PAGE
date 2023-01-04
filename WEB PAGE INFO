@@ -1,0 +1,74 @@
+int flag=0;
+int t1=0;
+int t2=0;
+void setup() 
+{
+  Serial.begin(9600);
+  pinMode(2,OUTPUT);
+
+}
+void loop() 
+{
+  int x=analogRead(A0);
+  //Serial.println(x);
+
+    if(x<400 && flag==0)
+  {
+    flag=1;
+    t1=millis();
+  }
+  else if(x>400 && flag==1)
+  {
+    flag=0;
+    t2=millis();
+    Serial.println(t2-t1);
+    if((t2-t1)>1000)
+    {
+      digitalWrite(2,HIGH);
+      Serial.println("Alert2!!!!!!!!!!!!!!!!!");
+      delay(2000);
+      digitalWrite(2,LOW);
+    }
+    else; 
+  } 
+}
+
+
+Programming Arduino Nano for Drowsiness Detection
+
+After a successful hardware connection for both the transmitter side and receiver side, now it’s time to upload the code to Arduino Nano that is connected to the receiver side. This complete code is given at the end of the document. First, let’s understand the code stepwise below:
+
+First, required variables need to be declared as shown below.
+
+int flag=0;
+int t1=0;
+int t2=0;
+In Setup(), all the initializations are made including Serial port initializations and pin declarations as shown below.
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(2,OUTPUT);
+}
+The serial data output of the RF receiver is read from the analog pin A0 and stored in a variable as shown. To check the reference values, we can see it using a serial monitor.
+
+  int x=analogRead(A0);
+  Serial.println(x);
+After determining the reference value, an if-else statement is written to detect the drowsiness. As shown in the code below, millis() function is used to know the duration for which the eye blink occurred. If it is greater than that value then it beeps a buzzer to alert the driver. In our case, the time duration is given as 1000 ms or 1 Sec.
+
+if(x<400 && flag==0) {
+    flag=1;
+    t1=millis();
+}
+else if(x>400 && flag==1) {
+    flag=0;
+    t2=millis();
+    Serial.println(t2-t1);
+    if((t2-t1)>1000) {
+        digitalWrite(2,HIGH);
+        Serial.println("Alert!!!!!!!!!!!!!!!!!");
+        delay(2000);
+        digitalWrite(2,LOW);
+    }
+    else;
+  }
+}
